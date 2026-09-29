@@ -1,0 +1,456 @@
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fortnite Web Launcher</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#050509;
+  color:white;
+}
+
+body{
+  background:
+    radial-gradient(circle at 50% 30%,#29306a 0%,transparent 35%),
+    radial-gradient(circle at 20% 80%,#161c4d 0%,transparent 35%),
+    linear-gradient(135deg,#030305,#0b0d18 55%,#050509);
+}
+
+/* animated background */
+.background{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:-1;
+}
+
+.orb{
+  position:absolute;
+  width:450px;
+  height:450px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:.25;
+  animation:float 10s infinite alternate ease-in-out;
+}
+
+.orb.one{
+  background:#5865ff;
+  left:-150px;
+  top:10%;
+}
+
+.orb.two{
+  background:#00c8ff;
+  right:-150px;
+  bottom:0;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(80px,-50px) scale(1.2)}
+}
+
+/* top bar */
+nav{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 35px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(5,5,10,.55);
+  backdrop-filter:blur(18px);
+}
+
+.logo{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.logo span{
+  color:#58a6ff;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:13px;
+  color:#b9bfd1;
+}
+
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#39ff88;
+  box-shadow:0 0 14px #39ff88;
+}
+
+/* main */
+main{
+  height:calc(100vh - 72px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+}
+
+.card{
+  width:min(950px,95vw);
+  min-height:560px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:30px;
+  background:rgba(11,12,23,.72);
+  backdrop-filter:blur(25px);
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.55),
+    inset 0 1px rgba(255,255,255,.08);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+
+/* left */
+.visual{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle,#3645b7 0%,transparent 45%),
+    linear-gradient(145deg,#10143a,#090a12);
+}
+
+.visual::before{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  animation:spin 15s linear infinite;
+}
+
+.visual::after{
+  content:"";
+  position:absolute;
+  width:470px;
+  height:470px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:50%;
+  animation:spin 25s linear infinite reverse;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.fortnite{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+.fortnite h1{
+  font-size:64px;
+  font-weight:1000;
+  letter-spacing:-4px;
+  text-shadow:0 8px 35px rgba(0,0,0,.6);
+}
+
+.fortnite p{
+  margin-top:10px;
+  color:#aeb7d4;
+  letter-spacing:4px;
+  font-size:12px;
+}
+
+/* right */
+.content{
+  padding:55px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.badge{
+  display:inline-flex;
+  width:max-content;
+  padding:7px 12px;
+  border-radius:100px;
+  background:rgba(88,166,255,.12);
+  border:1px solid rgba(88,166,255,.25);
+  color:#8dc4ff;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+
+h2{
+  font-size:38px;
+  line-height:1.05;
+  margin-bottom:15px;
+}
+
+.description{
+  color:#9ca3b8;
+  line-height:1.6;
+  font-size:15px;
+  margin-bottom:30px;
+}
+
+.play{
+  border:0;
+  cursor:pointer;
+  padding:18px 25px;
+  border-radius:14px;
+  font-size:17px;
+  font-weight:900;
+  color:white;
+  background:linear-gradient(135deg,#4f70ff,#705cff);
+  box-shadow:0 15px 35px rgba(79,112,255,.35);
+  transition:.25s;
+}
+
+.play:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 20px 45px rgba(79,112,255,.5);
+}
+
+.play:active{
+  transform:scale(.98);
+}
+
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:25px;
+}
+
+.info div{
+  padding:13px;
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.info small{
+  display:block;
+  color:#72798d;
+  font-size:10px;
+  margin-bottom:4px;
+}
+
+.info strong{
+  font-size:13px;
+}
+
+/* loading */
+.loading{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,2,7,.88);
+  backdrop-filter:blur(15px);
+  z-index:50;
+}
+
+.loading.show{
+  display:flex;
+}
+
+.loaderBox{
+  text-align:center;
+}
+
+.loader{
+  width:55px;
+  height:55px;
+  border:4px solid rgba(255,255,255,.1);
+  border-top-color:#6580ff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:auto auto 20px;
+}
+
+.loaderBox h3{
+  font-size:20px;
+}
+
+.loaderBox p{
+  color:#858ca2;
+  margin-top:8px;
+  font-size:13px;
+}
+
+/* mobile */
+@media(max-width:750px){
+  html,body{
+    overflow:auto;
+  }
+
+  nav{
+    padding:0 18px;
+  }
+
+  main{
+    height:auto;
+    min-height:calc(100vh - 72px);
+    padding:18px;
+  }
+
+  .card{
+    grid-template-columns:1fr;
+    margin:20px 0;
+  }
+
+  .visual{
+    min-height:300px;
+  }
+
+  .fortnite h1{
+    font-size:46px;
+  }
+
+  .content{
+    padding:35px 25px;
+  }
+
+  h2{
+    font-size:31px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+</div>
+
+<nav>
+  <div class="logo">FORTNITE<span>WEB</span></div>
+
+  <div class="status">
+    <div class="dot"></div>
+    Cloud Gaming verfügbar
+  </div>
+</nav>
+
+<main>
+
+  <section class="card">
+
+    <div class="visual">
+      <div class="fortnite">
+        <h1>FORTNITE</h1>
+        <p>BATTLE ROYALE</p>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="badge">
+        ● BROWSER GAMING
+      </div>
+
+      <h2>
+        Fortnite.<br>
+        Ohne Installation.
+      </h2>
+
+      <p class="description">
+        Starte Fortnite direkt über Cloud Gaming.
+        Das eigentliche Spiel läuft dabei auf einem
+        Cloud-Server und wird auf deinen Browser gestreamt.
+      </p>
+
+      <button class="play" onclick="startFortnite()">
+        ▶ Fortnite starten
+      </button>
+
+      <div class="info">
+
+        <div>
+          <small>PLATTFORM</small>
+          <strong>Browser</strong>
+        </div>
+
+        <div>
+          <small>INSTALLATION</small>
+          <strong>Nicht erforderlich</strong>
+        </div>
+
+        <div>
+          <small>STEUERUNG</small>
+          <strong>Touch / Controller</strong>
+        </div>
+
+        <div>
+          <small>VERBINDUNG</small>
+          <strong>Internet erforderlich</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<div class="loading" id="loading">
+  <div class="loaderBox">
+    <div class="loader"></div>
+    <h3>Fortnite wird gestartet</h3>
+    <p>Xbox Cloud Gaming wird geöffnet …</p>
+  </div>
+</div>
+
+<script>
+function startFortnite(){
+
+  const loading = document.getElementById("loading");
+
+  loading.classList.add("show");
+
+  setTimeout(() => {
+
+    /*
+      Offizielle Xbox-Cloud-Gaming-Seite.
+      Dort wird das echte Fortnite gestreamt.
+    */
+
+    window.location.href =
+      "https://www.xbox.com/de-DE/play";
+
+  },900);
+}
+</script>
+
+</body>
+</html>
+```
